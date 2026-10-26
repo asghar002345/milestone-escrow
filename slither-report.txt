@@ -1,0 +1,4 @@
+Detector: uninitialized-state
+Detector: timestamp
+Detector: low-level-calls
+INFO:Slither:src/MilestoneEscrow.sol analyzed (30 contracts with 102 detectors), 7 result(s) found

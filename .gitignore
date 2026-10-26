@@ -1,0 +1,19 @@
+# Foundry
+out/
+cache/
+broadcast/
+# Secrets
+.env
+.env*
+!.env.example
+*.key
+*.pem
+*keystore*
+*.secret
+secrets/
+.secrets/
+# Misc
+node_modules/
+.DS_Store
+lcov.info
+coverage/
