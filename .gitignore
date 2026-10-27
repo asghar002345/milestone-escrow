@@ -17,3 +17,6 @@ node_modules/
 .DS_Store
 lcov.info
 coverage/
+# Explicit (redundant with broadcast/ above, kept for clarity)
+broadcast/*/dry-run/
+broadcast/**/run-*.json
