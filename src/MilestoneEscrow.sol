@@ -58,6 +58,8 @@ contract MilestoneEscrow is IEscrowModule, EIP712, ReentrancyGuard, Ownable2Step
     uint16 public feeBps;
     address public feeRecipient;
     mapping(uint256 => Escrow) internal _escrows;
+    // False positive: written via storage pointer `ms.push(...)` in createEscrow; Slither does not track writes through storage refs.
+    // slither-disable-next-line uninitialized-state
     mapping(uint256 => Milestone[]) internal _milestones;
     /// @notice pull-payment credits: account => token => amount
     mapping(address => mapping(address => uint256)) internal _credits;
