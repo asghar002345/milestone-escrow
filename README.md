@@ -5,7 +5,7 @@ A **client** locks payment for a job split into milestones, a **provider** is pa
 is approved, and a neutral **arbiter** settles disputes. Supports native ETH and ERC-20 tokens,
 EIP-712 signed approvals (EOA and ERC-1271 smart accounts) and pull-payment withdrawals.
 
-> ⚠️ Unaudited. Not deployed. For research / testnet use only.
+> ⚠️ Unaudited. Testnet deployment only. For research / testnet use only.
 
 ## Features
 - One singleton contract holds many escrows (`escrowId`), each with 1–50 milestones.
@@ -107,17 +107,26 @@ forge coverage --no-match-coverage "(test|script)/"
 Requires solc 0.8.37 and EVM version `osaka` (OpenZeppelin 5.7 uses the `clz` opcode). Dependencies are git submodules:
 forge-std v1.17.0, openzeppelin-contracts v5.7.0.
 
-## Deploy to Base Sepolia (not yet deployed)
+## Deployments
+| Network | Contract | Address | Deploy tx | Verification |
+|---|---|---|---|---|
+| Base Sepolia (84532) | MilestoneEscrow | [`0xD861488f2ba02df4047DDE41EFeCdCEd1FD6E528`](https://base-sepolia.blockscout.com/address/0xD861488f2ba02df4047DDE41EFeCdCEd1FD6E528) | [`0xfdf451a7…e578`](https://base-sepolia.blockscout.com/tx/0xfdf451a75c020120106cc773e0127de38b2f7562881c1ecac39c4bba6fc0e578) | Sourcify exact match ([repo](https://repo.sourcify.dev/84532/0xD861488f2ba02df4047DDE41EFeCdCEd1FD6E528)) |
+
+Constructor: owner = fee recipient = `0x4f5D696b46F4946404A30869E28e8DaB04272DD6`, fee = 0 bps. Built with solc 0.8.37, EVM `osaka`
+(CLZ opcode confirmed working on Base Sepolia). Blockscout's direct verifier did not yet list solc 0.8.37, so the source was verified via Sourcify.
+
+## Deploy to Base Sepolia
 ```bash
 export PRIVATE_KEY=0x...              # never commit; .env* is gitignored
 export BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
 export ESCROW_OWNER=0x... FEE_RECIPIENT=0x... FEE_BPS=100   # optional
 forge script script/Deploy.s.sol --rpc-url base_sepolia --broadcast
 ```
-The script refuses to run on any chain other than 84532. Confirm Base Sepolia supports the Osaka EVM version first; otherwise pin OpenZeppelin 5.4 and target `cancun`.
+The script refuses to run on any chain other than 84532. Verify with `--verify --verifier sourcify` (Blockscout's own verifier lacked solc 0.8.37 at deploy time).
 
 ## Roadmap / open items
-- [ ] Confirm Osaka support on Base Sepolia, then deploy and verify
+- [x] Confirm Osaka support on Base Sepolia, deploy and verify (Sourcify)
+- [ ] Mainnet deployment (after audit)
 - [ ] Optional capped arbiter fee on dispute resolution
 - [ ] `withdrawTo(token, recipient)` for blocklisted recipients and module sweeps
 - [ ] Reference ERC-7579 executor module implementing `IEscrowModule` policies
